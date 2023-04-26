@@ -1,6 +1,4 @@
 using Cloud5mins.ShortenerTools.Core.Domain;
-using Microsoft.Azure.Functions.Worker.Http;
-using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
 using System;
 using System.Linq;
@@ -21,7 +19,7 @@ namespace Cloud5mins.ShortenerTools
         //sets the length of the unique code to add to vanity
         private const int MinVanityCodeLength = 5;
 
-        public static async Task<string> GetValidEndUrl(string vanity, StorageTableHelper stgHelper)
+        public static async Task<string> GetValidEndUrl(string? vanity, StorageTableHelper stgHelper)
         {
             if (string.IsNullOrEmpty(vanity))
             {
