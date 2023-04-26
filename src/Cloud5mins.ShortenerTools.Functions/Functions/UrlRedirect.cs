@@ -49,6 +49,7 @@ namespace Cloud5mins.ShortenerTools.Functions
             }
             else
             {
+                redirectUrl = _settings.RootRedirectUrl ?? redirectUrl;
                 _logger.LogInformation("Bad Link, resorting to fallback.");
             }
 
