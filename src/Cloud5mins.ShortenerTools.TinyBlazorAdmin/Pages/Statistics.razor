@@ -12,6 +12,7 @@
 @inject IJSRuntime JSRuntime
 @inject HttpClient Http
 @inject NavigationManager NavigationManager
+@inject ShortenerSettings Settings;
 
 @attribute [Authorize(Roles = "admin")]
 
@@ -83,7 +84,7 @@ else{
         subTitle = (!String.IsNullOrEmpty(vanity))? $"Clicks for: {vanity}": "All clicks";
         try{
             CancellationToken cancellationToken = new CancellationToken();
-            using var response = await Http.PostAsJsonAsync("/api/UrlClickStatsByDay",  new UrlClickStatsRequest(vanity), cancellationToken);
+            using var response = await Http.PostAsJsonAsync($"{Settings.CustomDomain}/api/UrlClickStatsByDay", new UrlClickStatsRequest(vanity), cancellationToken);
             if(response.IsSuccessStatusCode){
                 var jsonResult = await response.Content.ReadAsStringAsync();
                 clickStatsList = JsonSerializer.Deserialize<ClickDateList>(jsonResult);

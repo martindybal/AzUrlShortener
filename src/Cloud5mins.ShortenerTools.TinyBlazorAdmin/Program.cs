@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Syncfusion.Blazor;
 using Cloud5mins.ShortenerTools.TinyBlazorAdmin;
 using AzureStaticWebApps.Blazor.Authentication;
+using Cloud5mins.ShortenerTools.Core.Domain;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.RootComponents.Add<App>("#app");
@@ -12,6 +13,12 @@ builder.Services
         .AddScoped(sp => new HttpClient { BaseAddress = new Uri(baseAddress) })
         .AddStaticWebAppsAuthentication();
 
+builder.Services.AddSingleton(options =>
+{
+    var shortenerSettings = new ShortenerSettings();
+    builder.Configuration.Bind(shortenerSettings);
+    return shortenerSettings;
+});
 // builder.Services.AddMsalAuthentication(options =>
 // {
 //     builder.Configuration.Bind("AzureAd", options.ProviderOptions.Authentication);

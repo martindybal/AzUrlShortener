@@ -9,6 +9,7 @@
 @inject HttpClient Http
 @inject IJSRuntime JSRuntime
 @inject NavigationManager NavigationManager
+@inject ShortenerSettings Settings;
 
 @attribute [Authorize(Roles = "admin")]
 
@@ -193,7 +194,7 @@ else
     ShortUrlEntity editedUrl;
     SfGrid<ShortUrlEntity> grdUrls;
     public List<ShortUrlEntity> gridData { get; set; }
-
+    
 
     protected override async Task OnInitializedAsync()
     {
@@ -204,7 +205,7 @@ else
     {
         try
         {
-            using var response = await Http.GetAsync("/api/UrlList");
+            using var response = await Http.GetAsync($"{Settings.CustomDomain}/api/UrlList");
             if(response.IsSuccessStatusCode){
                 urls = await response.Content.ReadFromJsonAsync<ListResponse>();    
             }
@@ -235,7 +236,7 @@ else
 
         try
         {
-            await Http.PostAsJsonAsync<ShortUrlRequest>("/api/UrlCreate", shortUrlRequest);
+            await Http.PostAsJsonAsync<ShortUrlRequest>($"{Settings.CustomDomain}/api/UrlCreate", shortUrlRequest);
             await UpdateUIList();
             @* await grdUrls.ClearFilteringAsync();
                 await grdUrls.FilterByColumnAsync("RowKey", "equal", shortUrlRequest.Vanity); *@
@@ -275,7 +276,7 @@ else
     private async Task SaveUpdatedShortUrl()
     {
         ShowEditPopup = false;
-        await Http.PostAsJsonAsync<ShortUrlEntity>("/api/UrlUpdate", editedUrl);
+        await Http.PostAsJsonAsync<ShortUrlEntity>($"{Settings.CustomDomain}/api/UrlUpdate", editedUrl);
         await UpdateUIList();
     }
 
@@ -285,7 +286,7 @@ else
 
     public async Task ArchiveShortUrl(ShortUrlEntity urlEntity)
     {
-        await Http.PostAsJsonAsync<ShortUrlEntity>("/api/UrlArchive", urlEntity);
+        await Http.PostAsJsonAsync<ShortUrlEntity>($"{Settings.CustomDomain}/api/UrlArchive", urlEntity);
         await UpdateUIList();
     }
 
