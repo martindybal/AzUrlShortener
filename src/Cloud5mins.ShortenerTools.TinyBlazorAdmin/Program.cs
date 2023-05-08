@@ -17,7 +17,7 @@ builder.Services.AddSingleton(options =>
 {
     var shortenerSettings = new ShortenerSettings
     {
-        CustomDomain = "https://dovychov.at"
+        CustomDomain = "https://dovychovatlink-lqbpd-fa.azurewebsites.net"
     };
     return shortenerSettings;
 });
